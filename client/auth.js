@@ -3,9 +3,9 @@ import { DiscordSDK } from "@discord/embedded-app-sdk";
 // Will eventually store the authenticated user's access_token
 let auth;
 
-const discordSdk = new DiscordSDK(import.meta.env.VITE_DISCORD_CLIENT_ID);
+export const discordSdk = new DiscordSDK(import.meta.env.VITE_DISCORD_CLIENT_ID);
 
-async function setupDiscordSdk() {
+export async function setupDiscordSdk() {
   await discordSdk.ready();
   console.log(`[${new Date().toISOString()}] Discord SDK is ready`);
 
@@ -57,5 +57,3 @@ async function setupDiscordSdk() {
     console.log(`Access token authentication failed: ${err.message}`);
   }
 }
-
-
