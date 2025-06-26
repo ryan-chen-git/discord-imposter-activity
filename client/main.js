@@ -1,4 +1,5 @@
 import { setupDiscordSdk, discordSdk } from "./auth.js";
+import { subscribeToPlayerUpdates } from "./player-manager.js";
 import "./style.css";
 
 async function main() {
@@ -9,6 +10,7 @@ async function main() {
   const host = participants[0];
   console.log("Participants:", participants);
   console.log("Host:", host);
+  subscribeToPlayerUpdates();
 }
 
 main();
