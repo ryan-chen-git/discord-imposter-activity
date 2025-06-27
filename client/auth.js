@@ -3,7 +3,9 @@ import { DiscordSDK } from "@discord/embedded-app-sdk";
 // Will eventually store the authenticated user's access_token
 let auth;
 
-export const discordSdk = new DiscordSDK(import.meta.env.VITE_DISCORD_CLIENT_ID);
+export const discordSdk = new DiscordSDK(
+  import.meta.env.VITE_DISCORD_CLIENT_ID
+);
 
 export async function setupDiscordSdk() {
   await discordSdk.ready();
@@ -38,9 +40,8 @@ export async function setupDiscordSdk() {
       code: authorization_code,
     }),
   });
-  const { access_token } = await response
-    .json()
-    .then(console.log("Access token returned to frontend"));
+  const { access_token } = await response.json();
+  console.log("Access token returned to frontend");
 
   try {
     // Authenticate with Discord client (using the access_token)
@@ -52,7 +53,6 @@ export async function setupDiscordSdk() {
     // We can now make API calls within the scopes we requested in setupDiscordSDK()
     // Note: the access_token returned is a sensitive secret and should be treated as such
     console.log("Discord SDK setup successful");
-
   } catch (err) {
     console.log(`Access token authentication failed: ${err.message}`);
   }
