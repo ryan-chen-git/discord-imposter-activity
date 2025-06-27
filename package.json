@@ -1,0 +1,21 @@
+{
+  "name": "discord-imposter-activity",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "npm run client-dev & npm run server-dev",
+    "client-dev": "cd \"./client\" && npm run dev",
+    "server-dev": "cd \"./server\" && npm run dev",
+    "postinstall": "npm run install-client && npm run install-server",
+    "install-client": "cd \"./client\" && npm install",
+    "install-server": "cd \"./server\" && npm install",
+    "client-build": "cd \"./client\" && npm run build",
+    "tunnel": "cloudflared tunnel --url http://localhost:3001"
+  },
+  "devDependencies": {
+    "cloudflared": "^0.5.3"
+  },
+  "author": "Ryan Chen",
+  "license": "MIT"
+}

@@ -12,12 +12,10 @@
   },
   "dependencies": {
     "@discord/embedded-app-sdk": "^2.0.0",
+    "@robojs/patch": "^0.2.1",
     "phaser": "^3.90.0"
   },
   "devDependencies": {
     "vite": "^5.4.19"
-  },
-  "author": "Ryan Chen",
-  "license": "ISC",
-  "description": ""
+  }
 }

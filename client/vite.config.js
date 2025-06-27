@@ -1,5 +1,5 @@
 import {defineConfig} from 'vite';
-
+import { DiscordProxy } from '@robojs/patch'
 
 
 export default defineConfig({
@@ -22,6 +22,7 @@ export default defineConfig({
     },
     allowedHosts: true
   },
+  plugins: [DiscordProxy.Vite()]
 });
 
 // https://vitejs.dev/config/
