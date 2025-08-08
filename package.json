@@ -11,7 +11,7 @@
     "install-client": "cd \"./client\" && npm install",
     "install-server": "cd \"./server\" && npm install",
     "client-build": "cd \"./client\" && npm run build",
-    "tunnel": "cloudflared tunnel --url http://localhost:3001"
+    "tunnel": "cloudflared tunnel --url http://localhost:5173"
   },
   "devDependencies": {
     "cloudflared": "^0.5.3"

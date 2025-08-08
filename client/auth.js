@@ -1,11 +1,72 @@
-import { DiscordSDK } from "@discord/embedded-app-sdk";
+import { DiscordSDK, DiscordSDKMock } from "@discord/embedded-app-sdk";
 
 // Will eventually store the authenticated user's access_token
 let auth;
 
-export const discordSdk = new DiscordSDK(
-  import.meta.env.VITE_DISCORD_CLIENT_ID
-);
+const queryParams = new URLSearchParams(window.location.search);
+const isEmbedded = queryParams.get("frame_id") != null;
+
+// Debug environment variable loading
+console.log('Environment check:');
+console.log('VITE_DISCORD_CLIENT_ID:', import.meta.env.VITE_DISCORD_CLIENT_ID);
+console.log('isEmbedded:', isEmbedded);
+console.log('frame_id:', queryParams.get("frame_id"));
+
+let discordSdk;
+
+// Get client ID with fallback
+const clientId = import.meta.env.VITE_DISCORD_CLIENT_ID || '1234567890123456789'; // Fallback client ID
+
+if (isEmbedded) {
+  discordSdk = new DiscordSDK(clientId);
+} else {
+  // Use mock SDK for development/testing
+  const mockUserId = Math.random().toString(36).slice(2, 10);
+  const mockGuildId = Math.random().toString(36).slice(2, 10);
+  const mockChannelId = Math.random().toString(36).slice(2, 10);
+  
+  discordSdk = new DiscordSDKMock(
+    clientId,
+    mockGuildId,
+    mockChannelId
+  );
+  
+  const discriminator = String(mockUserId.charCodeAt(0) % 5);
+  
+  discordSdk._updateCommandMocks({
+    authenticate: async () => {
+      return await {
+        access_token: "mock_token",
+        user: {
+          username: mockUserId,
+          discriminator,
+          id: mockUserId,
+          avatar: null,
+          public_flags: 1,
+        },
+        scopes: [],
+        expires: new Date(2112, 1, 1).toString(),
+        application: {
+          description: "mock_app_description",
+          icon: "mock_app_icon",
+          id: "mock_app_id",
+          name: "mock_app_name",
+        },
+      };
+    },
+    getInstanceConnectedParticipants: async () => {
+      return {
+        participants: [
+          { user: { username: 'Alice', id: '1' } },
+          { user: { username: 'Bob', id: '2' } },
+          { user: { username: 'Charlie', id: '3' } }
+        ]
+      };
+    }
+  });
+}
+
+export { discordSdk };
 
 export async function setupDiscordSdk() {
   await discordSdk.ready();
@@ -15,7 +76,7 @@ export async function setupDiscordSdk() {
   let authorization_code;
   try {
     const result = await discordSdk.commands.authorize({
-      client_id: import.meta.env.VITE_DISCORD_CLIENT_ID,
+      client_id: clientId,
       response_type: "code",
       state: "",
       prompt: "none",
